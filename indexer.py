@@ -13,8 +13,8 @@ class Indexer:
         self.ps = PorterStemmer()
 
     def index_document(self, doc_id, tokens):
-        # Parse the text to extract important words
-        #important_words = self._extract_important_words(text)
+
+        #TODO CHECK DOC_ID
 
         # Create the inverted index
         for i in range(len(tokens)):
@@ -33,10 +33,14 @@ class Indexer:
 
     def extract_words(self, json):
         soup = BeautifulSoup(json["content"], "html.parser")
+        soup.prettify()
         # Tokenize the text
+        # print("ASDUHASUDHAISDAIS",type(soup))
         tokens = word_tokenize(soup.get_text())
         # Stem the remaining words
         stemTokens = [self.ps.stem(token.lower()) for token in tokens if token.isalnum()]
         return stemTokens
-
+    
+    def printindex(self):
+        print(self.index)
     
