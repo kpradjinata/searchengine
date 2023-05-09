@@ -4,52 +4,39 @@ import re
 from collections import defaultdict
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
+from bs4 import BeautifulSoup
 
 
 class Indexer:
     def __init__(self):
-        self.index = defaultdict(list)
+        self.index = {}
         self.ps = PorterStemmer()
 
-    def index_document(self, doc_id, text):
+    def index_document(self, doc_id, tokens):
         # Parse the text to extract important words
-        important_words = self._extract_important_words(text)
-
-        # Tokenize the text
-        tokens = word_tokenize(text)
-
-        # Remove stop words and stem the remaining words
-        terms = [self.ps.stem(token.lower()) for token in tokens if token.isalnum()]
+        #important_words = self._extract_important_words(text)
 
         # Create the inverted index
-        for i, term in enumerate(terms):
-            self.index[term].append((doc_id, i, term in important_words))
-
-    def save(self, path):
-        # Save the index to a file
-        with open(path, "w") as f:
-            json.dump(self.index, f)
+        for i in range(len(tokens)):
+            if tokens[i] not in self.index:
+                self.index[tokens[i]] = {doc_id: 1}
+            else:
+                if doc_id not in self.index[tokens[i]]:
+                    self.index[tokens[i]][doc_id] = 1
+                else:
+                    self.index[tokens[i]][doc_id] += 1
 
     def load(self, path):
         # Load the index from a file
         with open(path, "r") as f:
-            self.index = json.load(f)
+            return json.load(f)
 
-    def _extract_important_words(self, text):
-        # Extract important words from the text
-        important_words = set()
+    def extract_words(self, json):
+        soup = BeautifulSoup(json["content"], "html.parser")
+        # Tokenize the text
+        tokens = word_tokenize(soup.get_text())
+        # Stem the remaining words
+        stemTokens = [self.ps.stem(token.lower()) for token in tokens if token.isalnum()]
+        return stemTokens
 
-        # Extract words in bold
-        important_words.update(re.findall(r"<b>(.*?)</b>", text))
-
-        # Extract words in headings
-        important_words.update(re.findall(r"<h\d>(.*?)</h\d>", text))
-
-        # Extract words in titles
-        if "<title>" in text:
-            title_start = text.index("<title>") + len("<title>")
-            title_end = text.index("</title>")
-            title = text[title_start:title_end]
-            important_words.update(word_tokenize(title))
-
-        return important_words
+    
