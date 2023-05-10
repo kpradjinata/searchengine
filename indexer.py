@@ -32,24 +32,29 @@ class Indexer:
     def extract_words(self, json):
 
         #load the HTML
-        if (json["encoding"] == "utf-8" or json["encoding"] == "ascii") and bool(BeautifulSoup(json["content"], "html.parser").find()):
+        try:
+            #maybe keep if statement check if we need encoding
+            # if (json["encoding"] == "utf-8" or json["encoding"] == "ascii") and bool(BeautifulSoup(json["content"], "html.parser").find()):
             soup = BeautifulSoup(json["content"], "html.parser")
             #fix broken HTML
             soup.prettify()
-        else:
+            # Tokenize the text
+            tokens = word_tokenize(soup.get_text())
+
+            # Stem the remaining words
+            stemTokens = [self.ps.stem(token.lower()) for token in tokens if token.isalnum()]
+
+            return stemTokens
+
+        #accept xml error maybe
+        except RecursionError:
             self.failed += 1
             self.encodes.append(json["encoding"])
             return []
 
 
 
-        # Tokenize the text
-        tokens = word_tokenize(soup.get_text())
-
-        # Stem the remaining words
-        stemTokens = [self.ps.stem(token.lower()) for token in tokens if token.isalnum()]
-
-        return stemTokens
+       
     
     def printindex(self):
         #print the master index
