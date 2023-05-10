@@ -9,6 +9,8 @@ class Indexer:
     def __init__(self):
         self.index = {}
         self.ps = PorterStemmer()
+        self.failed = 0
+        self.encodes = []
 
     def index_document(self, doc_id, tokens):
         # Create the inverted index
@@ -28,11 +30,18 @@ class Indexer:
             return json.load(f)
 
     def extract_words(self, json):
-        #load the HTML
-        soup = BeautifulSoup(json["content"], "html.parser")
 
-        #fix broken HTML
-        soup.prettify()
+        #load the HTML
+        if (json["encoding"] == "utf-8" or json["encoding"] == "ascii") and bool(BeautifulSoup(json["content"], "html.parser").find()):
+            soup = BeautifulSoup(json["content"], "html.parser")
+            #fix broken HTML
+            soup.prettify()
+        else:
+            self.failed += 1
+            self.encodes.append(json["encoding"])
+            return []
+
+
 
         # Tokenize the text
         tokens = word_tokenize(soup.get_text())
