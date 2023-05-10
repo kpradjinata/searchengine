@@ -2,6 +2,11 @@ from indexer import Indexer
 import os
 
 def main():
+    #TODO DISK
+    #CHECK ENCODING
+    #CHECK ERRORS
+    #FIGURE OUT DOCID
+
     #contains the json files
     directory = 'searchengine/DEV' 
     json_files = []
@@ -17,11 +22,13 @@ def main():
     #index all the json files
     for file in json_files:
         json = indexer.load(file)
+        print(json["url"],file)
         tokens = indexer.extract_words(json)
         indexer.index_document(json["url"], tokens)
 
     #print the master index
     indexer.printindex()
+    print(indexer.failed)
 
 if __name__ == "__main__":
     main()
