@@ -10,7 +10,7 @@ class Indexer:
         self.index = {}
         self.ps = PorterStemmer()
         self.failed = 0
-        self.encodes = []
+        self.encodes = set()
 
     def index_document(self, doc_id, tokens):
         # Create the inverted index
@@ -34,22 +34,26 @@ class Indexer:
         #load the HTML
         try:
             #maybe keep if statement check if we need encoding
-            # if (json["encoding"] == "utf-8" or json["encoding"] == "ascii") and bool(BeautifulSoup(json["content"], "html.parser").find()):
-            soup = BeautifulSoup(json["content"], "html.parser")
-            #fix broken HTML
-            soup.prettify()
-            # Tokenize the text
-            tokens = word_tokenize(soup.get_text())
+            # json["encoding"] == "utf-8" or json["encoding"] == "ascii") and 
+            if bool(BeautifulSoup(json["content"], "html.parser").find()):
+                soup = BeautifulSoup(json["content"], "html.parser")
+                #fix broken HTML
+                soup.prettify()
+                # Tokenize the text
+                tokens = word_tokenize(soup.get_text())
 
-            # Stem the remaining words
-            stemTokens = [self.ps.stem(token.lower()) for token in tokens if token.isalnum()]
-
-            return stemTokens
+                # Stem the remaining words
+                stemTokens = [self.ps.stem(token.lower()) for token in tokens if token.isalnum()]
+                # self.encodes.append(json["encoding"])
+                return stemTokens
+            else:
+                return []
+        
 
         #accept xml error maybe
         except RecursionError:
             self.failed += 1
-            self.encodes.append(json["encoding"])
+            self.encodes.add(json["encoding"])
             return []
 
 
