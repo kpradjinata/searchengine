@@ -6,6 +6,8 @@ def main():
     #CHECK ENCODING
     #CHECK ERRORS
     #FIGURE OUT DOCID
+    #OUTPUT TO FILE
+    #CREATE PDF
 
     #contains the json files
     directory = 'searchengine/DEV' 
@@ -22,7 +24,7 @@ def main():
     #index all the json files
     for file in json_files:
         json = indexer.load(file)
-        print(json["url"],file)
+        print(json["url"],file,indexer.encodes)
         tokens = indexer.extract_words(json)
         indexer.index_document(json["url"], tokens)
 
