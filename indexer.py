@@ -11,7 +11,7 @@ class Indexer:
         self.ps = PorterStemmer()
         self.indexed_files = 0
         #keep as 10000
-        self.MAXSIZE = 10000
+        self.MAXSIZE = 9973
         self.times_indexed = 0
         self.documents = 0
         self.invalid = 0

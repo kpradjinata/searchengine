@@ -13,7 +13,7 @@ def main():
     #contains the json files
     directory = 'searchengine/DEV' 
     json_files = []
-    # count = 0
+    count = 0
 
     #get all the json files
     for root, dirs, files in os.walk(directory):
@@ -25,7 +25,7 @@ def main():
 
     #index all the json files
     for file in json_files:
-        # if count ==1000:
+        # if count ==520:
         #     break
         # count += 1
         json = indexer.load(file)
@@ -34,16 +34,20 @@ def main():
         indexer.index_document(json["url"], tokens)
 
     #print the master index
+    indexer.write_to_disk()
+
     indexer.merge_indexes()
 
     print(indexer.documents)
     print(indexer.invalid)
-    with open("report.txt","r") as f:
+    with open("report.txt","w") as f:
         f.write(f"Documents: {indexer.documents}\n")
         f.write(f"Invalid: {indexer.invalid}\n")
         index = indexer.load("index_final.json")
         # print(sys.getsizeof(index))
-        f.write(f"Final Index Size: {sys.getsizeof(index)}\n")
+        f.write(f"Final Index Size KB: {int(sys.getsizeof(index)/1024)}\n")
+        f.write(f"Unique Tokens: {len(index)}\n")
+        f.write(f"TOTAL INDEX: \n\n{index}")
 
     #get size of final index
 
@@ -52,6 +56,8 @@ def main():
 
     # indexer.printindex()
     # print(indexer.failed)
+
+
 
 if __name__ == "__main__":
     main()
