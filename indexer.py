@@ -10,8 +10,11 @@ class Indexer:
         self.index = {}
         self.ps = PorterStemmer()
         self.indexed_files = 0
-        self.MAXSIZE = 50
+        #keep as 10000
+        self.MAXSIZE = 10000
         self.times_indexed = 0
+        self.documents = 0
+        self.invalid = 0
 
     def index_document(self, doc_id, tokens):
         # Create the inverted index
@@ -59,12 +62,15 @@ class Indexer:
 
                 # Stem the remaining words
                 stemTokens = [self.ps.stem(token.lower()) for token in tokens if token.isalnum()]
+                self.documents += 1 
                 return stemTokens
             else:
+                self.invalid += 1
                 return []
         
         #accept xml error maybe
         except RecursionError:
+            self.invalid+=1
             return []
         
     def merge_indexes(self):

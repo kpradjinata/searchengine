@@ -1,8 +1,9 @@
 from indexer import Indexer
 import os
+import sys
 
 def main():
-    #TODO DISK
+    #TODO 
     #CHECK ENCODING
     #CHECK ERRORS
     #FIGURE OUT DOCID
@@ -12,7 +13,7 @@ def main():
     #contains the json files
     directory = 'searchengine/DEV' 
     json_files = []
-    count = 0
+    # count = 0
 
     #get all the json files
     for root, dirs, files in os.walk(directory):
@@ -24,9 +25,9 @@ def main():
 
     #index all the json files
     for file in json_files:
-        if count ==100:
-            break
-        count += 1
+        # if count ==1000:
+        #     break
+        # count += 1
         json = indexer.load(file)
         print(json["url"],file, indexer.indexed_files)
         tokens = indexer.extract_words(json)
@@ -34,6 +35,21 @@ def main():
 
     #print the master index
     indexer.merge_indexes()
+
+    print(indexer.documents)
+    print(indexer.invalid)
+    with open("report.txt","r") as f:
+        f.write(f"Documents: {indexer.documents}\n")
+        f.write(f"Invalid: {indexer.invalid}\n")
+        index = indexer.load("index_final.json")
+        # print(sys.getsizeof(index))
+        f.write(f"Final Index Size: {sys.getsizeof(index)}\n")
+
+    #get size of final index
+
+    # with open(, 'r') as f:
+
+
     # indexer.printindex()
     # print(indexer.failed)
 
