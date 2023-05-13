@@ -12,6 +12,7 @@ def main():
     #contains the json files
     directory = 'searchengine/DEV' 
     json_files = []
+    count = 0
 
     #get all the json files
     for root, dirs, files in os.walk(directory):
@@ -23,14 +24,18 @@ def main():
 
     #index all the json files
     for file in json_files:
+        if count ==100:
+            break
+        count += 1
         json = indexer.load(file)
-        print(json["url"],file,indexer.encodes)
+        print(json["url"],file, indexer.indexed_files)
         tokens = indexer.extract_words(json)
         indexer.index_document(json["url"], tokens)
 
     #print the master index
-    indexer.printindex()
-    print(indexer.failed)
+    indexer.merge_indexes()
+    # indexer.printindex()
+    # print(indexer.failed)
 
 if __name__ == "__main__":
     main()
