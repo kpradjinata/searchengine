@@ -38,8 +38,8 @@ def main():
 
     indexer.merge_indexes()
 
-    print(indexer.documents)
-    print(indexer.invalid)
+    # print(indexer.documents)
+    # print(indexer.invalid)
     with open("report.txt","w") as f:
         f.write(f"Documents: {indexer.documents}\n")
         f.write(f"Invalid: {indexer.invalid}\n")

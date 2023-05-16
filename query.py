@@ -13,7 +13,7 @@ def query(timesIndexed):
     totaltf = {}
 
     #get all indexes
-    for i in range(1,timesIndexed-1):
+    for i in range(1,timesIndexed+1):
         with open(f"index{i}.json", "r") as f:
             index = json.load(f)
             for q in userArr:
@@ -28,12 +28,11 @@ def query(timesIndexed):
                             else:
                                 totaltf[doc] += values[1]
 
-                                
+
     top_five = sorted(totaltf.items(), key=lambda x: x[1], reverse=True)[:5]
     print(top_five)
 
 
                 
             
-
-query(14)
+# query()
