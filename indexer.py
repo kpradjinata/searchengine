@@ -52,7 +52,6 @@ class Indexer:
         #load the HTML
         try:
             #maybe keep if statement check if we need encoding
-            # json["encoding"] == "utf-8" or json["encoding"] == "ascii") and 
             if bool(BeautifulSoup(json["content"], "html.parser").find()):
                 soup = BeautifulSoup(json["content"], "html.parser")
                 #fix broken HTML

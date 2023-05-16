@@ -49,14 +49,6 @@ def main():
         f.write(f"Unique Tokens: {len(index)}\n")
         f.write(f"TOTAL INDEX: \n\n{index}")
 
-    #get size of final index
-
-    # with open(, 'r') as f:
-
-
-    # indexer.printindex()
-    # print(indexer.failed)
-
 
 
 if __name__ == "__main__":
