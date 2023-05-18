@@ -24,9 +24,9 @@ def query(timesIndexed):
 
                         for doc, values in documents.items():
                             if doc not in totaltf:
-                                totaltf[doc] = values[1]
+                                totaltf[doc] = values[0]
                             else:
-                                totaltf[doc] += values[1]
+                                totaltf[doc] += values[0]
 
 
     top_five = sorted(totaltf.items(), key=lambda x: x[1], reverse=True)[:5]
@@ -35,4 +35,4 @@ def query(timesIndexed):
 
                 
             
-# query()
+query(62)
