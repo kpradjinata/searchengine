@@ -169,7 +169,7 @@ class Indexer:
 
         for term, postings in index.items():
             for posting, features in postings.items():
-                idf = math.log(50000/(1+len(index[term])))
+                idf = math.log(self.documents/(1+len(index[term])))
                 index[term][posting][1] = index[term][posting][1]*idf
 
 
