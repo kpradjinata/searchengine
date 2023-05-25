@@ -2,6 +2,7 @@
 from nltk.stem import PorterStemmer
 import json
 
+
 def query(timesIndexed):
     #user query
     while True:
@@ -9,13 +10,39 @@ def query(timesIndexed):
         if uinput == "x":
             break
         else:
-            uinput = uinput.split()
+            # splitinput = []
+            # first = second = -1
+            
+            # #check if quotes exist in query
+            # if uinput.count('"') == 2:
+            #     for i in range(len(uinput)):
+            #         if uinput[i] == '"':
+            #             if first == -1:
+            #                 first = i
+            #             else:
+            #                 second = i
+                
+            #     splitinput.append(uinput[first+1:second])
 
+            #     splitinput += uinput[0:first].split()
+
+            #     splitinput += uinput[second+1:].split()
+
+
+            # else:
+            #     splitinput = uinput.split()
+
+
+            splitinput = uinput.split()
+            # print(splitinput)
             ps = PorterStemmer()
             userArr = []
             #stem the query
-            for w in uinput:
+            for w in splitinput:
                 userArr.append(ps.stem(w))
+
+
+            
 
             #index with the query
             totaltf = {}
@@ -43,4 +70,4 @@ def query(timesIndexed):
 
                 
      
-query(1)
+query(9)

@@ -4,6 +4,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from bs4 import BeautifulSoup
 import math
+import sys
 
 
 class Indexer:
@@ -12,7 +13,7 @@ class Indexer:
         self.ps = PorterStemmer()
         self.indexed_files = 0
         #keep as 9973
-        self.MAXSIZE = 9973
+        self.MAXSIZE = 200
         self.times_indexed = 0
         self.documents = 0
         self.invalid = 0
@@ -78,6 +79,26 @@ class Indexer:
                 soup.prettify()
                 # Tokenize the text
                 tokens = word_tokenize(soup.get_text())
+
+                # # Get the important tags
+                # important_tags = soup.find_all(['h1', 'strong', 'b'])
+                # for tag in important_tags:
+                #     if '<h1' in str(tag):
+                #         words = tag.get_text().split()
+                #         tokens += (words * 10)
+                #     elif '<h2' in str(tag):
+                #         words = tag.get_text().split()
+                #         tokens += (words * 5)
+                #     elif 'h3' in str(tag):
+                #         words = tag.get_text().split()
+                #         tokens += (words * 4)
+                #     elif 'strong' in str(tag):
+                #         words = tag.get_text().split()
+                #         tokens += (words * 3)
+                #     elif 'b' in str(tag):
+                #         words = tag.get_text().split()
+                #         tokens += (words * 2)
+                # print("ASDHAISDUHASIUDHAISUDHA")
 
                 # Stem the remaining words
                 stemTokens = [self.ps.stem(token.lower()) for token in tokens if token.isalnum()]
