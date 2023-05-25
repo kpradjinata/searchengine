@@ -4,14 +4,13 @@ import sys
 
 def main():
     #TODO 
-    #CHECK ENCODING
-    #CHECK ERRORS
-    #FIGURE OUT DOCID
-    #OUTPUT TO FILE
-    #CREATE PDF
+    #CHECK ENCODINGS
+    #FIX DOCID
+    #add tfidf logic
+    #add stop words
 
     #contains the json files
-    directory = './DEV' 
+    directory = 'searchengine/DEV' 
     json_files = []
     count = 0
 
@@ -33,23 +32,22 @@ def main():
         tokens = indexer.extract_words(json)
         indexer.index_document(json["url"], tokens)
 
-    #print the master index
+    #write the remaining index to disk
     indexer.write_to_disk()
 
+    #merge all files together
     indexer.merge_indexes()
 
-    # print(indexer.documents)
-    # print(indexer.invalid)
-    with open("report.txt","w") as f:
-        f.write(f"Documents: {indexer.documents}\n")
-        f.write(f"Invalid: {indexer.invalid}\n")
-        index = indexer.load("index_final.json")
-        # print(sys.getsizeof(index))
-        f.write(f"Final Index Size KB: {int(sys.getsizeof(index)/1024)}\n")
-        f.write(f"Unique Tokens: {len(index)}\n")
-        f.write(f"TOTAL INDEX: \n\n{index}")
+    #print final report
+    indexer.write_report()
+
 
 
 
 if __name__ == "__main__":
     main()
+
+
+
+
+

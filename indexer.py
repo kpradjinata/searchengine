@@ -87,7 +87,6 @@ class Indexer:
                 self.invalid += 1
                 return []
         
-        #accept xml error maybe
         except RecursionError:
             self.invalid+=1
             return []
@@ -105,13 +104,20 @@ class Indexer:
                     for doc_id, values in postings.items():
                         if doc_id not in final_index[term]:
                             final_index[term][doc_id] = values
-                    
-
-
 
         # Write the final index to disk
         with open("index_final.json", 'w') as f:
             json.dump(final_index, f)
+
+
+    def write_report(self):
+        with open("report.txt","w") as f:
+            f.write(f"Documents Indexed: {self.documents}\n")
+            f.write(f"Invalid Documents: {self.invalid}\n")
+            index = self.load("index_final.json")
+            f.write(f"Final Index Size KB: {int(sys.getsizeof(index)/1024)}\n")
+            f.write(f"Unique Tokens: {len(index)}\n")
+            f.write(f"TOTAL INDEX: \n\n{index}")
     
     # def add_idf(self):
     #     # get idf for all partial indexes
