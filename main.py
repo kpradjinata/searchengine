@@ -11,7 +11,7 @@ def main():
     #CREATE PDF
 
     #contains the json files
-    directory = 'searchengine/DEV' 
+    directory = './DEV' 
     json_files = []
     count = 0
 
@@ -52,4 +52,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    #main()
+    indexer = Indexer()
+    indexer.distribute_index()
