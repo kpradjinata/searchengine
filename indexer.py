@@ -4,6 +4,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from bs4 import BeautifulSoup
 import math
+import sys
 
 
 class Indexer:
@@ -12,7 +13,7 @@ class Indexer:
         self.ps = PorterStemmer()
         self.indexed_files = 0
         #keep as 9973
-        self.MAXSIZE = 9973
+        self.MAXSIZE = 200
         self.times_indexed = 0
         self.documents = 0
         self.invalid = 0
@@ -80,6 +81,26 @@ class Indexer:
                 # Tokenize the text
                 tokens = word_tokenize(soup.get_text())
 
+                # # Get the important tags
+                # important_tags = soup.find_all(['h1', 'strong', 'b'])
+                # for tag in important_tags:
+                #     if '<h1' in str(tag):
+                #         words = tag.get_text().split()
+                #         tokens += (words * 10)
+                #     elif '<h2' in str(tag):
+                #         words = tag.get_text().split()
+                #         tokens += (words * 5)
+                #     elif 'h3' in str(tag):
+                #         words = tag.get_text().split()
+                #         tokens += (words * 4)
+                #     elif 'strong' in str(tag):
+                #         words = tag.get_text().split()
+                #         tokens += (words * 3)
+                #     elif 'b' in str(tag):
+                #         words = tag.get_text().split()
+                #         tokens += (words * 2)
+                # print("ASDHAISDUHASIUDHAISUDHA")
+
                 # Stem the remaining words
                 stemTokens = [self.ps.stem(token.lower()) for token in tokens if token.isalnum()]
                 self.documents += 1 
@@ -88,7 +109,6 @@ class Indexer:
                 self.invalid += 1
                 return []
         
-        #accept xml error maybe
         except RecursionError:
             self.invalid+=1
             return []
@@ -106,13 +126,30 @@ class Indexer:
                     for doc_id, values in postings.items():
                         if doc_id not in final_index[term]:
                             final_index[term][doc_id] = values
-                    
-
-
 
         # Write the final index to disk
         with open("index_final.json", 'w') as f:
             json.dump(final_index, f)
+
+
+    def write_report(self):
+        with open("report.txt","w") as f:
+            f.write(f"Documents Indexed: {self.documents}\n")
+            f.write(f"Invalid Documents: {self.invalid}\n")
+            index = self.load("index_final.json")
+            f.write(f"Final Index Size KB: {int(sys.getsizeof(index)/1024)}\n")
+            f.write(f"Unique Tokens: {len(index)}\n")
+            f.write(f"TOTAL INDEX: \n\n{index}")
+    
+    # def add_idf(self):
+    #     # get idf for all partial indexes
+    #     for i in range(1, self.times_indexed+1):
+    #         file_path = f"index{i}.json"
+    #         with open(file_path, 'r') as f:
+    #             index = json.load(f)
+    #             for term, postings in index.items():
+    #                 #get idf for each term
+    #                 idf = math.log(self.documents/(1+len(postings)))
 
     def distribute_index(self):
         file_path = f"index_final.json"

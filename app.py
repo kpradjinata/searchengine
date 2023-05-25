@@ -18,7 +18,7 @@ def search():
     uinput = request.form['query']
     #time taken to query in milli seconds
     time_taken = time.perf_counter()
-    top_five = query(37, uinput)
+    top_five = query(5, uinput)
     time_taken = time.perf_counter() - time_taken
     return render_template('result.html', results=top_five, time_taken=time_taken)
 
