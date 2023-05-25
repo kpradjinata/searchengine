@@ -3,13 +3,10 @@ from nltk.stem import PorterStemmer
 import json
 
 
-def query(timesIndexed):
+def query(timesIndexed,uinput):
     #user query
-    while True:
-        uinput = input("Query (x to quit): ")
-        if uinput == "x":
-            break
-        else:
+
+
             # splitinput = []
             # first = second = -1
             
@@ -33,21 +30,21 @@ def query(timesIndexed):
             #     splitinput = uinput.split()
 
 
-            splitinput = uinput.split()
-            # print(splitinput)
-            ps = PorterStemmer()
-            userArr = []
-            #stem the query
-            for w in splitinput:
-                userArr.append(ps.stem(w))
+    splitinput = uinput.split()
+    # print(splitinput)
+    ps = PorterStemmer()
+    userArr = []
+    #stem the query
+    for w in splitinput:
+        userArr.append(ps.stem(w))
 
-            alphanum = '0123456789abcdefghijklmnopqrstuvwxyz'
+    alphanum = '0123456789abcdefghijklmnopqrstuvwxyz'
 
 
-            
+    
 
-            #index with the query
-            totaltf = {}
+    #index with the query
+    totaltf = {}
 
     #get all indexes
     for q in userArr:
@@ -71,9 +68,8 @@ def query(timesIndexed):
 
 
     top_five = sorted(totaltf.items(), key=lambda x: x[1], reverse=True)[:5]
-    print(top_five)
+    # print(top_five)
     return top_five
 
                 
      
-query(9)
