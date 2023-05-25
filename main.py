@@ -11,7 +11,7 @@ def main():
     #CREATE PDF
 
     #contains the json files
-    directory = 'searchengine/DEV' 
+    directory = './DEV' 
     json_files = []
     count = 0
 

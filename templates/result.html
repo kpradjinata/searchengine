@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <ul>
+        {% for result in results %}
+        <!-- add link to result[0]-->
+        <a href="{{ result[0] }}">
+        <li>{{ result[0] }} - {{ result[1] }}</li>
+        </a>
+        {% endfor %}
+    </ul>
+    <!-- Add a link back to the search page -->
+    <a href="/">Back to search</a>
+    <!-- show time taken to retrieve search in ms-->
+    <p>Search took {{ time_taken }} s</p>
+</body>
+</html>

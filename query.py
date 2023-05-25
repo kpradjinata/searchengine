@@ -1,8 +1,8 @@
 from nltk.stem import PorterStemmer
 import json
 
-def query(timesIndexed):
-    uinput = input("Query: ")
+def query(timesIndexed, uinput):
+    # uinput = input("Query: ")
     uinput = uinput.split()
 
     ps = PorterStemmer()
@@ -31,8 +31,9 @@ def query(timesIndexed):
 
     top_five = sorted(totaltf.items(), key=lambda x: x[1], reverse=True)[:5]
     print(top_five)
+    return top_five
 
 
-                
+# uinput = input("Query: ")               
             
-query(62)
+# query(62, uinput)
