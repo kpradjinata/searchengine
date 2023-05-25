@@ -24,9 +24,9 @@ def main():
 
     #index all the json files
     for file in json_files:
-        if count == 1020:
-            break
-        count += 1
+        # if count == 1020:
+        #     break
+        # count += 1
         json = indexer.load(file)
         print(json["url"],file, indexer.indexed_files)
         tokens = indexer.extract_words(json)
