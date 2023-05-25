@@ -41,32 +41,38 @@ def query(timesIndexed):
             for w in splitinput:
                 userArr.append(ps.stem(w))
 
+            alphanum = '0123456789abcdefghijklmnopqrstuvwxyz'
+
 
             
 
             #index with the query
             totaltf = {}
 
-            #get all indexes with the query
-            for i in range(1,timesIndexed+1):
-                with open(f"index{i}.json", "r") as f:
-                    index = json.load(f)
-                    for q in userArr:
-                        if q in index:
-                            #hard coded "of"
-                            if q!="of":
-                                documents = index[q]
-                                for doc, values in documents.items():
-                                    if doc not in totaltf:
-                                        totaltf[doc] = values[0]
-                                    else:
-                                        totaltf[doc] += values[0]
+    #get all indexes
+    for q in userArr:
+        if q[0] not in alphanum:
+            index = 37
+        else:
+            index = alphanum.index(q[0])
+            index += 1
+
+        with open(f"index{index}.json", "r") as f:
+            index = json.load(f)
+        if q in index:
+            #hard coded "of"
+            if q!="of":
+                documents = index[q]
+                for doc, values in documents.items():
+                    if doc not in totaltf:
+                        totaltf[doc] = values[1]
+                    else:
+                        totaltf[doc] += values[1]
 
 
-            #top 5 urls
-            top_five = sorted(totaltf.items(), key=lambda x: x[1], reverse=True)[:5]
-            print(top_five)
-
+    top_five = sorted(totaltf.items(), key=lambda x: x[1], reverse=True)[:5]
+    print(top_five)
+    return top_five
 
                 
      
