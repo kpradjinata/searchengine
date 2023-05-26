@@ -13,7 +13,7 @@ class Indexer:
         self.ps = PorterStemmer()
         self.indexed_files = 0
         #keep as 9973
-        self.MAXSIZE = 200
+        self.MAXSIZE = 9973
         self.times_indexed = 0
         self.documents = 0
         self.invalid = 0
@@ -67,6 +67,7 @@ class Indexer:
         with open(path, "r") as f:
             return json.load(f)
 
+    # retrun html lables of tokens
     def extract_words(self, json):
 
         #load the HTML
@@ -80,24 +81,24 @@ class Indexer:
                 # Tokenize the text
                 tokens = word_tokenize(soup.get_text())
 
-                # # Get the important tags
-                # important_tags = soup.find_all(['h1', 'strong', 'b'])
-                # for tag in important_tags:
-                #     if '<h1' in str(tag):
-                #         words = tag.get_text().split()
-                #         tokens += (words * 10)
-                #     elif '<h2' in str(tag):
-                #         words = tag.get_text().split()
-                #         tokens += (words * 5)
-                #     elif 'h3' in str(tag):
-                #         words = tag.get_text().split()
-                #         tokens += (words * 4)
-                #     elif 'strong' in str(tag):
-                #         words = tag.get_text().split()
-                #         tokens += (words * 3)
-                #     elif 'b' in str(tag):
-                #         words = tag.get_text().split()
-                #         tokens += (words * 2)
+                # Get the important tags
+                important_tags = soup.find_all(['h1', 'strong', 'b'])
+                for tag in important_tags:
+                    if '<h1' in str(tag):
+                        words = tag.get_text().split()
+                        tokens += (words * 10)
+                    elif '<h2' in str(tag):
+                        words = tag.get_text().split()
+                        tokens += (words * 5)
+                    elif 'h3' in str(tag):
+                        words = tag.get_text().split()
+                        tokens += (words * 4)
+                    elif 'strong' in str(tag):
+                        words = tag.get_text().split()
+                        tokens += (words * 3)
+                    elif 'b' in str(tag):
+                        words = tag.get_text().split()
+                        tokens += (words * 2)
                 # print("ASDHAISDUHASIUDHAISUDHA")
 
                 # Stem the remaining words
@@ -150,8 +151,44 @@ class Indexer:
     #                 #get idf for each term
     #                 idf = math.log(self.documents/(1+len(postings)))
 
-    #     #add idf to the final index
-    #     idf = math.log(49000/(1+len()))
+    def distribute_index(self):
+        file_path = f"index_final.json"
+        merged_file = open(file_path, 'r')
+        index = json.load(merged_file)
+
+        #sort the index alphabetically, keeping the dic
+        index = dict(sorted(index.items(), key=lambda x: x[0]))
+
+        #split the index into 26 parts based on the first letter of the term
+        #each part is a dictionary
+
+        self.index = {}
+        alphanum = '0123456789abcdefghijklmnopqrstuvwxyz'
+        alpha_index = 0
+        self.times_indexed = 0
+
+        for term, postings in index.items():
+            for posting, features in postings.items():
+                idf = math.log(self.documents/(1+len(index[term])))
+                index[term][posting][1] = index[term][posting][1]*idf
+
+
+
+            if alpha_index == 36:
+                self.index[term] = index[term]
+            elif term[0] == alphanum[alpha_index]:
+                self.index[term] = index[term]
+            else:
+                #offload, need to fix sorting
+                # self.index = dict(sorted(self.index.items(), key=lambda x: x[1]))
+                self.write_to_disk()
+                self.index[term] = index[term]
+                if alpha_index != 36:
+                    alpha_index += 1
+        # self.index = dict(sorted(self.index.items(), key=lambda x: x[1]))
+        self.write_to_disk()
+
+
 
 
 
