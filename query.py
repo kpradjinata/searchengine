@@ -48,11 +48,9 @@ def query(timesIndexed,uinput):
 
     #get all indexes
     for q in userArr:
-        if q[0] not in alphanum:
-            index = 37
-        else:
-            index = alphanum.index(q[0])
-            index += 1
+        with open(f"index_index.json", "r") as f:
+            index_index = json.load(f)
+        index = index_index[q]
 
         with open(f"index{index}.json", "r") as f:
             index = json.load(f)
@@ -69,10 +67,8 @@ def query(timesIndexed,uinput):
 
 
     top_five = sorted(totaltf.items(), key=lambda x: x[1], reverse=True)[:20]
-    print(totaltf)
-    print(top_five)
     return top_five
 
-query(1,"machine")
+# query(1,"machine")
                 
      

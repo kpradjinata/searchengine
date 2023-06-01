@@ -189,6 +189,63 @@ class Indexer:
         # self.index = dict(sorted(self.index.items(), key=lambda x: x[1]))
         self.write_to_disk()
 
+    def distribute_small_index(self):
+        file_path = f"index_final.json"
+        merged_file = open(file_path, 'r')
+        index = json.load(merged_file)
+
+        #sort the index alphabetically, keeping the dic
+        index = dict(sorted(index.items(), key=lambda x: x[0]))
+        max_size = 400
+
+        size_of_each_file = len(index)/max_size
+
+        #split the index into 400 parts
+        #each part is a dictionary
+
+        self.index = {}
+        alpha_index = 0
+        self.times_indexed = 0
+
+        for term, postings in index.items():
+            #calculate tfidf
+            for posting, features in postings.items():
+                idf = math.log(50000/(1+len(index[term])))
+                index[term][posting][1] = index[term][posting][1]*idf
+            #sort the postings by tfidf, save top 20
+            index[term] = dict(sorted(index[term].items(),key=lambda x:x[1][1],reverse = True)[:20])
+
+            #split the index into 400 parts
+            #each part is a dictionary
+            if len(self.index) < size_of_each_file:
+                self.index[term] = index[term]
+            else:
+                #offload
+                self.write_to_disk()
+                self.index[term] = index[term]
+        self.write_to_disk()
+
+    def index_index(self):
+        #index the index
+        #index is a dictionary
+        #key is the term
+        #value is the dictionary of docid and tfidf
+        #index_index is a dictionary
+        #key is the term
+        #value is a position of the term within the index
+        max_size = 400
+        index_index = {}
+        filepath = "index_index.json"
+        for i in range(1, max_size+1):
+            file_path = f"index{i}.json"
+            with open(file_path, 'r') as f:
+                index = json.load(f)
+                for term, postings in index.items():
+                    if term not in index_index:
+                        index_index[term] = i
+
+        with open(filepath, "w") as f:
+            json.dump(index_index, f)
 
 
 
