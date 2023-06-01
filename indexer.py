@@ -30,10 +30,10 @@ class Indexer:
                     # print(self.index[tokens[i]][doc_id][0])
                     self.index[tokens[i]][doc_id][0] += 1
             
-            #tf
-            tf = self.index[tokens[i]][doc_id][0]/len(tokens)
+            #calculate tfidf here
+            tf = self.index[tokens[i]][doc_id][0]
             idf = math.log(self.documents/(1+len(self.index[tokens[i]])))
-            tfidf = tf*idf
+            tfidf = tf * idf
             
             #value of values is a list of size 2 containing the tf
             if len(self.index[tokens[i]][doc_id]) == 1:
@@ -86,19 +86,19 @@ class Indexer:
                 for tag in important_tags:
                     if '<h1' in str(tag):
                         words = tag.get_text().split()
-                        tokens += (words * 10)
+                        tokens += (words * 9)
                     elif '<h2' in str(tag):
                         words = tag.get_text().split()
-                        tokens += (words * 5)
+                        tokens += (words * 4)
                     elif 'h3' in str(tag):
                         words = tag.get_text().split()
-                        tokens += (words * 4)
+                        tokens += (words * 3)
                     elif 'strong' in str(tag):
                         words = tag.get_text().split()
-                        tokens += (words * 3)
+                        tokens += (words * 2)
                     elif 'b' in str(tag):
                         words = tag.get_text().split()
-                        tokens += (words * 2)
+                        tokens += (words)
                 # print("ASDHAISDUHASIUDHAISUDHA")
 
                 # Stem the remaining words
@@ -169,9 +169,10 @@ class Indexer:
 
         for term, postings in index.items():
             for posting, features in postings.items():
-                idf = math.log(self.documents/(1+len(index[term])))
+                idf = math.log(50000/(1+len(index[term])))
                 index[term][posting][1] = index[term][posting][1]*idf
 
+            index[term] = dict(sorted(index[term].items(),key=lambda x:x[1][1],reverse = True)[:20])
 
 
             if alpha_index == 36:
@@ -187,7 +188,6 @@ class Indexer:
                     alpha_index += 1
         # self.index = dict(sorted(self.index.items(), key=lambda x: x[1]))
         self.write_to_disk()
-
 
 
 

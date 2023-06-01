@@ -10,7 +10,7 @@ def main():
     #add stop words
 
     #contains the json files
-    directory = './DEV' 
+    directory = 'searchengine/DEV' 
     json_files = []
     count = 0
 
@@ -24,7 +24,7 @@ def main():
 
     #index all the json files
     for file in json_files:
-        # if count == 1020:
+        # if count == 20020:
         #     break
         # count += 1
         json = indexer.load(file)
@@ -39,6 +39,7 @@ def main():
     indexer.merge_indexes()
 
     indexer.distribute_index()
+    # indexer.createTFIDF()
 
     #print final report
     indexer.write_report()
@@ -48,7 +49,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    indexer = Indexer()
+    indexer.distribute_index()
 
 
 
