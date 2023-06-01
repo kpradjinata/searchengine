@@ -5,6 +5,7 @@ import sys
 from nltk.stem import PorterStemmer
 import json
 from query import query
+# from query import process_queries_in_parallel
 import time
 
 app = Flask(__name__)

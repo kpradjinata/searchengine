@@ -6,6 +6,9 @@ from bs4 import BeautifulSoup
 import math
 import sys
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+vectorizer = TfidfVectorizer()
+
 
 class Indexer:
     def __init__(self):
@@ -47,6 +50,7 @@ class Indexer:
 
                     
         self.indexed_files += 1
+        
 
         # Write to disk if the index is too large
         if self.indexed_files >= self.MAXSIZE:
@@ -79,6 +83,7 @@ class Indexer:
                 #fix broken HTML
                 soup.prettify()
                 # Tokenize the text
+                #includes anchor tags
                 tokens = word_tokenize(soup.get_text())
 
                 # Get the important tags
@@ -196,7 +201,7 @@ class Indexer:
 
         #sort the index alphabetically, keeping the dic
         index = dict(sorted(index.items(), key=lambda x: x[0]))
-        max_size = 400
+        max_size = 300
 
         size_of_each_file = len(index)/max_size
 
@@ -233,7 +238,7 @@ class Indexer:
         #index_index is a dictionary
         #key is the term
         #value is a position of the term within the index
-        max_size = 400
+        max_size = 300
         index_index = {}
         filepath = "index_index.json"
         for i in range(1, max_size+1):
