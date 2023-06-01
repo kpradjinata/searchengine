@@ -60,6 +60,7 @@ def query(timesIndexed,uinput):
             #hard coded "of"
             if q!="of":
                 documents = index[q]
+                # documents = dict(list(index[q].items())[:20])
                 for doc, values in documents.items():
                     if doc not in totaltf:
                         totaltf[doc] = values[1]
@@ -67,9 +68,11 @@ def query(timesIndexed,uinput):
                         totaltf[doc] += values[1]
 
 
-    top_five = sorted(totaltf.items(), key=lambda x: x[1], reverse=True)[:5]
-    # print(top_five)
+    top_five = sorted(totaltf.items(), key=lambda x: x[1], reverse=True)[:20]
+    print(totaltf)
+    print(top_five)
     return top_five
 
+query(1,"machine")
                 
      
