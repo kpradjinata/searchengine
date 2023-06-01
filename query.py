@@ -1,49 +1,74 @@
+
 from nltk.stem import PorterStemmer
 import json
-from concurrent.futures import ThreadPoolExecutor
 
-def query(timesIndexed, uinput):
+
+def query(timesIndexed,uinput):
+    #user query
+
+
+            # splitinput = []
+            # first = second = -1
+            
+            # #check if quotes exist in query
+            # if uinput.count('"') == 2:
+            #     for i in range(len(uinput)):
+            #         if uinput[i] == '"':
+            #             if first == -1:
+            #                 first = i
+            #             else:
+            #                 second = i
+                
+            #     splitinput.append(uinput[first+1:second])
+
+            #     splitinput += uinput[0:first].split()
+
+            #     splitinput += uinput[second+1:].split()
+
+
+            # else:
+            #     splitinput = uinput.split()
+
+
     splitinput = uinput.split()
+    # print(splitinput)
     ps = PorterStemmer()
-    userArr = [ps.stem(w) for w in splitinput]
+    userArr = []
+    #stem the query
+    for w in splitinput:
+        userArr.append(ps.stem(w))
 
     alphanum = '0123456789abcdefghijklmnopqrstuvwxyz'
 
+
+    
+
+    #index with the query
     totaltf = {}
 
-    def process_index(index_path, query_terms):
-        index = load_index_from_disk(index_path)
-        for term in query_terms:
-            if term in index:
-                documents = index[term]
+    #get all indexes
+    for q in userArr:
+        with open(f"index_index.json", "r") as f:
+            index_index = json.load(f)
+        index = index_index[q]
+
+        with open(f"index{index}.json", "r") as f:
+            index = json.load(f)
+        if q in index:
+            #hard coded "of"
+            if q!="of":
+                documents = index[q]
+                # documents = dict(list(index[q].items())[:20])
                 for doc, values in documents.items():
-                    totaltf.setdefault(doc, 0)
-                    totaltf[doc] += values[1]
+                    if doc not in totaltf:
+                        totaltf[doc] = values[1]
+                    else:
+                        totaltf[doc] += values[1]
 
-    # Split query terms into groups for parallel processing
-    query_groups = [[] for _ in range(len(alphanum) + 1)]
-    for term in userArr:
-        if term[0] not in alphanum:
-            index = 37
-        else:
-            index = alphanum.index(term[0]) + 1
-        query_groups[index].append(term)
-
-    # Parallel query processing
-    with ThreadPoolExecutor() as executor:
-        futures = []
-        for index, terms in enumerate(query_groups):
-            if terms:
-                index_path = f"index{index}.json"
-                futures.append(executor.submit(process_index, index_path, terms))
-
-    # Wait for all futures to complete
-    for future in futures:
-        future.result()
 
     top_five = sorted(totaltf.items(), key=lambda x: x[1], reverse=True)[:20]
     return top_five
 
-def load_index_from_disk(file_path):
-    with open(file_path, "r") as f:
-        return json.load(f)
+# query(1,"machine")
+                
+     

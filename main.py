@@ -52,6 +52,8 @@ if __name__ == "__main__":
     # main()
     indexer = Indexer()
     indexer.distribute_index()
+    # indexer.distribute_small_index()
+    indexer.index_index()
 
 
 
