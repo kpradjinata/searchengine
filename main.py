@@ -4,10 +4,12 @@ import sys
 
 def main():
     #TODO 
-    #CHECK ENCODINGS
-    #FIX DOCID
-    #add tfidf logic
-    #add stop words
+    #DOC ID
+    #COS SIMILARITY
+    #HITS + PAGE RANKING
+    #2-gram and 3-gram 
+    #word position
+    #OPEN AI
 
     #contains the json files
     directory = 'searchengine/DEV' 
@@ -40,6 +42,8 @@ def main():
 
     indexer.distribute_index()
     # indexer.createTFIDF()
+    indexer.distribute_small_index()
+    indexer.index_index()
 
     #print final report
     indexer.write_report()
@@ -49,11 +53,10 @@ def main():
 
 
 if __name__ == "__main__":
-    # main()
-    indexer = Indexer()
+    main()
+    # indexer = Indexer()
     # indexer.distribute_index()
-    indexer.distribute_small_index()
-    indexer.index_index()
+
 
 
 

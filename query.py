@@ -38,8 +38,4 @@ def query(timesIndexed, uinput):
         )
 
     top_five = sorted(totaltf.items(), key=lambda x: x[1], reverse=True)[:20]
-    return top_five
-
-# query(1,"machine")
-                
-     
+    return top_five                
