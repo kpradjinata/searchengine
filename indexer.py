@@ -32,8 +32,7 @@ class Indexer:
             
             #calculate tfidf here
             tf = self.index[tokens[i]][doc_id][0]
-            idf = math.log(self.documents/(1+len(self.index[tokens[i]])))
-            tfidf = tf * idf
+
             
             #value of values is a list of size 2 containing the tf
             if len(self.index[tokens[i]][doc_id]) == 1:
@@ -82,7 +81,7 @@ class Indexer:
                 tokens = word_tokenize(soup.get_text())
 
                 # Get the important tags
-                important_tags = soup.find_all(['h1', 'strong', 'b'])
+                important_tags = soup.find_all(['h1','h2','h3', 'strong', 'b', 'a'])
                 for tag in important_tags:
                     if '<h1' in str(tag):
                         words = tag.get_text().split()
@@ -97,6 +96,9 @@ class Indexer:
                         words = tag.get_text().split()
                         tokens += (words * 2)
                     elif 'b' in str(tag):
+                        words = tag.get_text().split()
+                        tokens += (words)
+                    elif 'a' in str(tag):
                         words = tag.get_text().split()
                         tokens += (words)
                 # print("ASDHAISDUHASIUDHAISUDHA")
