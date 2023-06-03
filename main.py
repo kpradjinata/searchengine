@@ -3,12 +3,6 @@ import os
 import sys
 
 def main():
-    #TODO 
-    #CHECK ENCODINGS
-    #FIX DOCID
-    #add tfidf logic
-    #add stop words
-
     #contains the json files
     directory = 'searchengine/DEV' 
     json_files = []

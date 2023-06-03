@@ -145,16 +145,6 @@ class Indexer:
             f.write(f"Final Index Size KB: {int(sys.getsizeof(index)/1024)}\n")
             f.write(f"Unique Tokens: {len(index)}\n")
             f.write(f"TOTAL INDEX: \n\n{index}")
-    
-    # def add_idf(self):
-    #     # get idf for all partial indexes
-    #     for i in range(1, self.times_indexed+1):
-    #         file_path = f"index{i}.json"
-    #         with open(file_path, 'r') as f:
-    #             index = json.load(f)
-    #             for term, postings in index.items():
-    #                 #get idf for each term
-    #                 idf = math.log(self.documents/(1+len(postings)))
 
     def distribute_index(self):
         file_path = f"index_final.json"

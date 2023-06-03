@@ -1,0 +1,65 @@
+﻿Queries used in testing:
+1. university of california irvine
+   1. Started poorly with low efficiency because of using a 4 word query.
+   2. Added splitting the merged index 36 times and saving the letter ranges of each index to know exactly which partial index and query token is in. 
+   3. This resulted in better efficiency. Time went from around 10 seconds to about 1 second.
+2. master of software engineering
+   1. Started poorly with low efficiency because of using a 4 word query.
+   2. Added splitting the merged index 36 times and saving the letter ranges of each index to know exactly which partial index and query token is in. 
+   3. This resulted in better efficiency. Time went from around 10 seconds to about 1 second.
+3. machine learning
+   1. Started poorly with bad ranking because we were getting large text documents by just ranking them with token frequency.
+   2. Implemented tf into our ranking.
+   3. This resulted in a better performance with urls with a better query to amount of text ratio.
+4. computer networks
+   1. Started poorly with bad ranking because we were getting large text documents by just ranking them with token frequency.
+   2. Implemented tf into our ranking.
+   3. This resulted in a better performance with urls with a better query to amount of text ratio.
+5. relational database
+   1. Started poorly with bad ranking because we started getting some images when using just tf in our ranking.
+   2. Implemented tf-idf into our ranking.
+   3. This resulted in a better performance with urls with a better query to amount of text ratio.
+6. artificial intelligence
+   1. Started poorly with bad ranking because we started getting some images when using just tf in our ranking.
+   2. Implemented tf-idf into our ranking.
+   3. This resulted in a better performance with urls with a better query to amount of text ratio.
+7. students work building professor
+   1. Started poorly with low efficiency because of using a 4 word query (not < 300ms) yet
+   2. Added splitting the merged index 100 times instead of 36 now and saving the letter ranges of each index to know exactly which partial index and query token is in.
+   3. This resulted in better efficiency. Time went from around 900 ms to about 400 ms.
+8. document index cosine
+   1. Started poorly with low efficiency because of using a 3 word query (not < 300ms) yet
+   2. Added splitting the merged index 100 times instead of 36 now and saving the letter ranges of each index to know exactly which partial index and query token is in.
+   3. This resulted in better efficiency. Time went from around 600 ms to about 300 ms.
+9. cristina lopes
+   1. Had great performance as there were only a few urls with cristina lopes so they always appeared at the top.
+10. professor science building
+   1. Had great efficiency as we implemented the index of an index. Performance was also good as we had relevant results with the query terms. 
+11. ACM
+   1. Had great performance as there were only a few urls with ACM so they always appeared at the top. Short query is good for efficiency as well.
+12. student professor university of california 
+   1. Started poorly with low efficiency because of using a 4 word query (not < 300ms) yet
+   2. Added splitting the merged index 300 times instead of 100 now and saving the letter ranges of each index to know exactly which partial index and query token is in.
+   3. This resulted in better efficiency. Time went from around 350 ms to about 88 ms.
+13. cristina alberto building science research
+   1. Started poorly with low efficiency because of using a 4 word query (not < 300ms) yet
+   2. Added splitting the merged index 300 times now and saving the letter ranges of each index to know exactly which partial index and query token is in.
+   3. This resulted in better efficiency. Time went from around 900 ms to about 88 ms.
+14. learn teach science machine 
+   1. After adding the index of an index to know exactly which partial index and query word was in, the efficiency improved dramatically, getting around 850 ms for this query. 85 ms.
+15. building tall big
+   1. Started poorly with mediocre ranking as many results included the building query but not many were pages that were talking about a building.
+   2. Added important words by adding weight to text that was part of a header or bold tag.
+   3. Started receiving results where building was part of the title of the page and results that were talking about buildings.
+16. food good
+   1. Started poorly with mediocre ranking as many results included the food query but not many were pages that were talking about food.
+   2. Added important words by adding weight to text that was part of a header or bold tag.
+   3. Started receiving results where food was part of the title of the page and results that were talking about food.
+17. Wong ma
+   1. Had great performance as there were only a few urls with Wong ma so they always appeared at the top. Efficiency was consistently good because of the index of an index. 88 ms
+18. research vision
+   1. Had great efficiency as we implemented the index of an index. Performance was also good as we had relevant results with the query terms. 93 ms
+19. of and they
+   1. Had great efficiency as we implemented the index of an index. Performance was also good as we had relevant results with the query terms. 80 ms
+20. sports
+   1. Had great efficiency as we implemented the index of an index. Performance was also good as we had relevant results with the query terms. 89 ms
